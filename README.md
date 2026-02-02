@@ -3,150 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat Animation Video</title>
+<title>Do You Love Me?</title>
 
-<!-- ================= CSS ================= -->
-    <style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-        font-family: Arial, Helvetica, sans-serif;
-    }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-    body{
-        background:black;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:100vh;
-    }
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#1f1c2c,#928dab);
+}
 
-    /* 9:16 Video Frame */
-    .video{
-        width:360px;
-        height:640px;
-        background:linear-gradient(180deg,#111,#1f1f1f);
-        border-radius:20px;
-        padding:20px;
-        overflow:hidden;
-    }
+/* MAIN CARD */
+.container{
+    width:350px;
+    height:550px;
+    background:#ffecec;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
 
-    /* Chat container */
-    .chat{
-        display:flex;
-        flex-direction:column;
-        gap:12px;
-    }
+/* QUESTION */
+h2{
+    margin-top:10px;
+    color:#333;
+}
 
-    /* Message base */
-    .msg{
-        max-width:75%;
-        padding:12px 14px;
-        font-size:15px;
-        border-radius:14px;
-        opacity:0;
-        transform:translateY(20px);
-        animation:show 0.6s forwards;
-    }
+/* IMAGE */
+.img-box{
+    margin:30px 0;
+}
 
-    /* Left message */
-    .left{
-        background:#2c2c2c;
-        color:white;
-        align-self:flex-start;
-    }
+.img-box img{
+    width:160px;
+}
 
-    /* Right message */
-    .right{
-        background:#e50914;
-        color:white;
-        align-self:flex-end;
-    }
+/* BUTTONS */
+.buttons{
+    position:relative;
+    height:120px;
+}
 
-    /* Animation */
-    @keyframes show{
-        to{
-            opacity:1;
-            transform:translateY(0);
-        }
-    }
+button{
+    padding:10px 22px;
+    border:none;
+    border-radius:20px;
+    font-size:16px;
+    cursor:pointer;
+    position:absolute;
+}
 
-    /* Typing indicator */
-    .typing{
-        width:60px;
-        background:#2c2c2c;
-        padding:10px;
-        border-radius:14px;
-        display:flex;
-        gap:6px;
-        align-self:flex-start;
-    }
+#yes{
+    background:#ff4d6d;
+    color:white;
+    left:70px;
+    bottom:20px;
+}
 
-    .dot{
-        width:6px;
-        height:6px;
-        background:#aaa;
-        border-radius:50%;
-        animation:blink 1.4s infinite both;
-    }
+#no{
+    background:#444;
+    color:white;
+    right:70px;
+    bottom:20px;
+}
 
-    .dot:nth-child(2){animation-delay:.2s;}
-    .dot:nth-child(3){animation-delay:.4s;}
+/* RESULT SCREEN */
+.result{
+    position:absolute;
+    inset:0;
+    background:#ffecec;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
 
-    @keyframes blink{
-        0%{opacity:.2;}
-        20%{opacity:1;}
-        100%{opacity:.2;}
-    }
-    </style>
-    </head>
+.result img{
+    width:180px;
+    margin-bottom:15px;
+}
 
-    <body>
+.result h2{
+    color:#ff4d6d;
+}
+</style>
+</head>
 
-    <div class="video">
-        <div class="chat" id="chat"></div>
+<body>
+
+<div class="container">
+
+    <!-- QUESTION SCREEN -->
+    <div class="question">
+        <h2>Do you love me? 💖</h2>
+
+        <div class="img-box">
+            <!-- You can replace image -->
+            <img src="C:\Users\siva\Downloads\teddy 2.gif" alt="cute">
+        </div>
+
+        <div class="buttons">
+            <button id="yes">Yes</button>
+            <button id="no">No</button>
+        </div>
     </div>
 
-<!-- ================= JAVASCRIPT ================= -->
+    <!-- RESULT SCREEN -->
+    <div class="result" id="result">
+        <img src="C:\Users\siva\Downloads\teddy 1.gif">
+        <h2>I knew it ,Because youre my favourite 😍</h2>
+    </div>
+
+</div>
+
 <script>
-const chat = document.getElementById("chat");
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const result = document.getElementById("result");
 
-const messages = [
-    { text: "Bro, did you finish the video edit?", side: "left" },
-    { text: "Almost done 🔥", side: "right" },
-    { text: "Deadline is today!", side: "left" },
-    { text: "Relax 😎 exporting now", side: "right" }
-];
+// NO button runs away
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
 
-let delay = 0;
+function moveButton(){
+    const x = Math.random() * 200;
+    const y = Math.random() * 80;
 
-messages.forEach(msg => {
-    setTimeout(() => {
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
 
-        // typing animation
-        const typing = document.createElement("div");
-        typing.className = "typing";
-        typing.innerHTML = `
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        `;
-        chat.appendChild(typing);
-
-        setTimeout(() => {
-            typing.remove();
-
-            const message = document.createElement("div");
-            message.className = `msg ${msg.side}`;
-            message.innerText = msg.text;
-            chat.appendChild(message);
-
-        }, 900);
-
-    }, delay);
-
-    delay += 1600;
+// YES button action
+yesBtn.addEventListener("click", ()=>{
+    result.style.display = "flex";
 });
 </script>
 
